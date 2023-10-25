@@ -16,7 +16,7 @@ router
 router
     .route('/:id')
     .get(obtenerAlumno)
-    .put(editarAlumno)
+    .patch(editarAlumno)
     .delete(eliminarAlumno)
 
 export default router;
