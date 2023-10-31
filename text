@@ -4,3 +4,6 @@ cedulaAlumno = IFNULL(?, cedulaAlumno), primerApellido = IFNULL(?, primerApellid
 
 
 cedulaAlumno = ?,primerApellido = ?,segundoApellido = ?,primerNombre  = ?,segundoNombre = ?, fechaNacimiento = ?,direccion = ?, fechaIngreso = ?,telefono = ?, ocupacion = ?,cedulaInstructor = ?cedulaAlumno = ?,primerApellido = ?,segundoApellido = ?,primerNombre  = ?,segundoNombre = ?, fechaNacimiento = ?,direccion = ?, fechaIngreso = ?,telefono = ?, ocupacion = ?,cedulaInstructor = ?
+
+
+ cedulaInstructor, usuario,correo,password,primerApellido,segundoApellido,primerNombre,segundoNombre,direccion,fechaRegistro,telefono,idClub

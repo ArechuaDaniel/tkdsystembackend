@@ -43,14 +43,14 @@ const obtenerAlumno = async (req, res) => {
 const editarAlumno = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(id);
+    
     const { cedulaAlumno ,primerApellido ,segundoApellido ,primerNombre  ,segundoNombre , fechaNacimiento ,direccion, fechaIngreso,telefono, ocupacion,cedulaInstructor } = req.body;
-    console.log(req.body);
+    
     const [result] = await pool.query(
       "UPDATE alumno SET cedulaAlumno = IFNULL(?, cedulaAlumno), primerApellido = IFNULL(?, primerApellido), segundoApellido = IFNULL(?, segundoApellido), primerNombre = IFNULL(?, primerNombre), segundoNombre = IFNULL(?, segundoNombre), fechaNacimiento = IFNULL(?, fechaNacimiento), direccion = IFNULL(?, direccion), fechaIngreso = IFNULL(?, fechaIngreso), telefono = IFNULL(?, telefono), ocupacion = IFNULL(?, ocupacion), cedulaInstructor = IFNULL(?, cedulaInstructor) WHERE cedulaAlumno = ?",
       [cedulaAlumno ,primerApellido ,segundoApellido ,primerNombre  ,segundoNombre , fechaNacimiento ,direccion, fechaIngreso,telefono, ocupacion,cedulaInstructor , id ]
     );
-    console.log(result);
+    
 
     if (result.affectedRows === 0)
       return res.status(404).json({ message: "Alumno no encontrado" });

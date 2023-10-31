@@ -11,7 +11,7 @@ import {
 const router = express.Router();
 
 // Autenticación y registro de Usuarios
-router.post("/", registrar ); // Cr;ea un nuevo usuario
+router.post("/", registrar ); // Crea un nuevo usuario
 router.post("/login", autenticar);
 router.get('/olvide-password', olvidePassword);
 router.route('/olvide-password/:token').get(comprobarToken).post(nuevoPassword)
