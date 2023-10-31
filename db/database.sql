@@ -27,12 +27,12 @@ CREATE TABLE instructor (
   telefono CHAR(10) DEFAULT NULL,
   idClub INT NOT NULL,
   token CHAR(45),
-  confirmado BOOLEAN DEFAULT FALSE,
+  confirmado boolean DEFAULT false,
   PRIMARY KEY(cedulaInstructor),
   FOREIGN KEY (idClub) REFERENCES club(idClub)
 );
-INSERT INTO instructor (cedulaInstructor,correo,password,primerApellido,segundoApellido,primerNombre,segundoNombre,direccion,fechaRegistro,telefono,idClub) values 
-  ('1234567811','correo@correo.com','123456','Sabonim','ken','Mario','Doe','Carapungo','2019-12-31','0999999999','1');
+INSERT INTO instructor (cedulaInstructor,correo,password,primerApellido,segundoApellido,primerNombre,segundoNombre,direccion,fechaRegistro,telefono,idClub, confirmado) values 
+  ('1234567811','correo@correo.com','123456','Sabonim','ken','Mario','Doe','Carapungo','2019-12-31','0999999999','1', '1');
 
 SELECT * FROM club;
 
@@ -97,3 +97,7 @@ SELECT * FROM asistencia;
 SELECT * FROM instructor;
 SELECT cedulaInstructor, password, primerApellido FROM instructor;
 SELECT cedulaInstructor, password, 	CONCAT(primerApellido,' ',primerNombre) AS Nombres FROM instructor;
+SELECT cedulaInstructor,correo, password, 	CONCAT(primerApellido,' ',primerNombre) AS Nombres, token FROM instructor;
+SELECT cedulaInstructor,correo, password, 	CONCAT(primerApellido,' ',primerNombre) AS Nombres, token, confirmado FROM instructor;
+
+update instructor set confirmado = 1 where cedulaInstructor = "1234567817";
