@@ -6,17 +6,18 @@ import {
     editarAlumno,
     eliminarAlumno,
 } from "../controller/alumnoController.js"
+import checkAuth from "../middleware/checkAuth.js";
 const router = express.Router();
 
 router
     .route("/")
-    .get(obtenerAlumnos)
-    .post(nuevoAlumno)
+    .get(checkAuth, obtenerAlumnos)
+    .post(checkAuth, nuevoAlumno)
 
 router
     .route('/:id')
-    .get(obtenerAlumno)
-    .patch(editarAlumno)
-    .delete(eliminarAlumno)
+    .get(checkAuth, obtenerAlumno)
+    .patch(checkAuth, editarAlumno)
+    .delete(checkAuth, eliminarAlumno)
 
 export default router;

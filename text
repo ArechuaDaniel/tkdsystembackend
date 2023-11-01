@@ -7,3 +7,7 @@ cedulaAlumno = ?,primerApellido = ?,segundoApellido = ?,primerNombre  = ?,segund
 
 
  cedulaInstructor, usuario,correo,password,primerApellido,segundoApellido,primerNombre,segundoNombre,direccion,fechaRegistro,telefono,idClub
+
+ $2a$10$2YG6.m2nSTNzQldlfPzm0uEwSfZRvABVWBmjaKq1Zsx9QBfXt0KxS
+ $2a$10$G.bI5NMcKAlCpfL/74TDN.net.xl2MHiZSm1IXPL3bmnKoYj8lFXC
+ $2a$10$G.bI5NMcKAlCpfL/74TDN.net.xl2MHiZSm1IXPL3bmnKoYj8lFXC
