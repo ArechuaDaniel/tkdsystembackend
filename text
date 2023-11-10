@@ -11,3 +11,9 @@ cedulaAlumno = ?,primerApellido = ?,segundoApellido = ?,primerNombre  = ?,segund
  $2a$10$2YG6.m2nSTNzQldlfPzm0uEwSfZRvABVWBmjaKq1Zsx9QBfXt0KxS
  $2a$10$G.bI5NMcKAlCpfL/74TDN.net.xl2MHiZSm1IXPL3bmnKoYj8lFXC
  $2a$10$G.bI5NMcKAlCpfL/74TDN.net.xl2MHiZSm1IXPL3bmnKoYj8lFXC
+
+
+ EMAIL_USER=fc0cf673acb29e
+EMAIL_PASS=5a11e2e1209c2f
+EMAIL_HOST=sandbox.smtp.mailtrap.io
+EMAIL_PORT=2525
