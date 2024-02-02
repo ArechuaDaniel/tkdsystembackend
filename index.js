@@ -17,8 +17,9 @@ app.use(express.json());
 
 dotenv.config();
 
+//const servidor = process.env.FRONTEND_URL , 'http://127.0.0.1:5173'
 //CONFIGURAR CORS
-const whitelist=[process.env.FRONTEND_URL];
+const whitelist=[ process.env.FRONTEND_URL, 'http://127.0.0.1:5173'];
 const corsOptions = {
     origin: function (origin, callback){
         if (whitelist.includes(origin)) {

@@ -90,7 +90,7 @@ const autenticar = async (req, res) => {
       return res.status(403).json({ msg: error.message })
     }
   } catch (error) {
-    console.log(error);
+    console.log(error)
   }
 }
 const confirmar = async (req, res) => {

@@ -53,10 +53,10 @@ CREATE TABLE alumno (
 );
 
 INSERT INTO alumno values 
-  ('1234567890','Arias','ken','Jhon','Doe','1999-12-31','Carapungo','2019-12-31','0999999999','Estudiante','1234567811'),
-  ('1234567891','Bartco','ken','Jhon','Doe','1999-12-31','Carapungo','2019-12-31','0999999999','Otros','1234567811'),
-  ('1234567892','Pkdj','ken','Jhon','Doe','1999-12-31','Carapungo','2019-12-31','0999999999','Estudiante','1234567811'),
-  ('1234567893','Ad','ken','Jhon','Doe','1999-12-31','Carapungo','2019-12-31','0999999999','Estudiante','1234567811');
+  ('1234567897','Arias','ken','Jhon','Doe','1999-12-31','Carapungo','2019-12-31','0999999999','Estudiante','0930766449'),
+  ('1234567896','Bartco','ken','Jhon','Doe','1999-12-31','Carapungo','2019-12-31','0999999999','Otros','0930766449'),
+  ('1234567895','Pkdj','ken','Jhon','Doe','1999-12-31','Carapungo','2019-12-31','0999999999','Estudiante','0930766449'),
+  ('1234567894','Ad','ken','Jhon','Doe','1999-12-31','Carapungo','2019-12-31','0999999999','Estudiante','0930766449');
 
 
 SELECT club.club, instructor.primerNombre
