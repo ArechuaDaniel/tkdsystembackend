@@ -12,7 +12,7 @@ CREATE TABLE club (
   PRIMARY KEY(idClub) 
 );
 INSERT INTO club (club,director,direccion,fechaAfiliacion,telefono) values 
-  ('Club Apolo','Pinto Mario','Carapungo','2019-12-31','0999999999');
+  ('Club Apolo','Pinto Mario','Carapungo','2000-10-10','0960073310');
 
 CREATE TABLE instructor (
   cedulaInstructor CHAR(15) NOT NULL,
