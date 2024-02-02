@@ -8,9 +8,9 @@ import { createPool } from "mysql2/promise";
 // } from "./config.js";
 
 export const pool = createPool({
-  host: process.env.DB_HOST || 'localhost',
-  user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || 'root',
+  host: process.env.DB_HOST ,
+  user: process.env.DB_USER ,
+  password: process.env.DB_PASSWORD ,
   port: process.env.DB_PORT,
   database: process.env.DB_DATABASE,
 });
