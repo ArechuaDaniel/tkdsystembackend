@@ -8,19 +8,19 @@ import {
     eliminarHorario,
 } from "../controller/horarioController.js"
 
-//TODO: AGREGAR CHECKAUTH
 
+import checkAuth from "../middleware/checkAuth.js";
 const router = express.Router();
 
 router
     .route("/")
-    .get(obtenerHorarios)
-    .post(nuevoHorario)
+    .get(checkAuth,obtenerHorarios)
+    .post(checkAuth,nuevoHorario)
 
 router
     .route('/:id')
-    .get(obtenerHorario)
-    .put(editarHorario)
-    .delete(eliminarHorario)
+    .get(checkAuth,obtenerHorario)
+    .put(checkAuth,editarHorario)
+    .delete(checkAuth,eliminarHorario)
 
 export default router;

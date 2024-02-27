@@ -47,16 +47,17 @@ CREATE TABLE alumno (
   fechaIngreso DATE,
   telefono CHAR(10) DEFAULT NULL,
   ocupacion ENUM("Estudiante", "Trabaja", "Otros" ),
+  estado ENUM("Activo", "Inactivo" ),
   cedulaInstructor CHAR(15) NOT NULL ,
   PRIMARY KEY(cedulaAlumno),
   FOREIGN KEY (cedulaInstructor) REFERENCES instructor(cedulaInstructor)
 );
 
 INSERT INTO alumno values 
-  ('1234567897','Arias','ken','Jhon','Doe','1999-12-31','Carapungo','2019-12-31','0999999999','Estudiante','0930766449'),
-  ('1234567896','Bartco','ken','Jhon','Doe','1999-12-31','Carapungo','2019-12-31','0999999999','Otros','0930766449'),
-  ('1234567895','Pkdj','ken','Jhon','Doe','1999-12-31','Carapungo','2019-12-31','0999999999','Estudiante','0930766449'),
-  ('1234567894','Ad','ken','Jhon','Doe','1999-12-31','Carapungo','2019-12-31','0999999999','Estudiante','0930766449');
+  ('1234567810','Arias','ken','Jhon','Doe','1999-12-31','Carapungo','2019-12-31','0999999999','Estudiante','Activo','1234561232'),
+  ('1234567815','Bartco','ken','Jhon','Doe','1999-12-31','Carapungo','2019-12-31','0999999999','Otros','Activo','1234561232'),
+  ('1234567825','Perez','ken','Jhon','Doe','1999-12-31','Carapungo','2019-12-31','0999999999','Estudiante','Activo','1234561232'),
+  ('1234567824','Zaza','ken','Jhon','Doe','1999-12-31','Carapungo','2019-12-31','0999999999','Estudiante','Inactivo','1234561232');
 
 
 SELECT club.club, instructor.primerNombre
@@ -67,15 +68,17 @@ SELECT * FROM alumno;
 
 CREATE TABLE horario (
   idHorario INT NOT NULL AUTO_INCREMENT,
-  hoarioInicio TIME,
-  hoarioFin TIME,
-  PRIMARY KEY(idHorario) 
+  hoarioInicio TIME NOT NULL,
+  hoarioFin TIME NOT NULL,
+  cedulaInstructor CHAR(15) NOT NULL ,
+  PRIMARY KEY(idHorario), 
+  FOREIGN KEY (cedulaInstructor) REFERENCES instructor(cedulaInstructor)
 );
-INSERT INTO horario (hoarioInicio, hoarioFin) values 
-  ('10:00','11:00'),
-  ('11:00','12:00'),
-  ('12:00','13:00'),
-  ('13:00','14:00')
+INSERT INTO horario (hoarioInicio, hoarioFin, cedulaInstructor) values 
+  ('10:00','11:00','0930766449'),
+  ('11:00','12:00','0930766449'),
+  ('12:00','13:00','0930766449'),
+  ('13:00','14:00','1234561232')
   ;
 
 SELECT * FROM horario;
@@ -90,8 +93,41 @@ CREATE TABLE asistencia (
   CONSTRAINT FK_idHorario FOREIGN KEY (idHorario) REFERENCES horario(idHorario)
 );
 INSERT INTO asistencia (fechaRegistro,cedulaAlumno, idHorario) values 
-  ('2023-10-30','1234567890',1),
-  ('2023-10-30','1234567891',2);
+  ('2023-10-30','1202547898',1),
+  ('2023-10-30','1234567810',4);
+
+-- CREATE TABLE cinturon (
+--   idCinturon INT NOT NULL AUTO_INCREMENT,
+--   color VARCHAR(70) NOT NULL,
+--   PRIMARY KEY(idCinturon) 
+-- );
+-- INSERT INTO cinturon (color) values 
+--   ('Blanco'),
+--   ('Blanco - Amarillo'),
+--   ('Amarillo'),
+--   ('Amarillo - Verde'),
+--   ('Verde'),
+--   ('Verde - Azul'),
+--   ('Azul'),
+--   ('Azul - Rojo'),
+--   ('Rojo'),
+--   ('Rojo - Negro'),
+--   ('Negro')
+--   ;  
+CREATE TABLE asenso (
+  idAsenso INT NOT NULL AUTO_INCREMENT,
+  fechaAsenso DATE,
+  cedulaAlumno CHAR(10) NOT NULL,
+  cinturon ENUM("Blanco", "Blanco-Amarillo", "Amarillo", "Amarillo-Verde", "Verde","Verde-Azul", "Azul", "Azul-Rojo", "Rojo", "Rojo-Negro", "Negro"),
+  cedulaInstructor CHAR(10) NOT NULL,
+  PRIMARY KEY(idAsenso),
+  CONSTRAINT FK_cedulaAlumno1 FOREIGN KEY (cedulaAlumno) REFERENCES alumno(cedulaAlumno),
+  CONSTRAINT FK_cedulaInstructor FOREIGN KEY (cedulaInstructor) REFERENCES instructor(cedulaInstructor)
+  
+);
+INSERT INTO asenso (fechaAsenso,cedulaAlumno, cinturon,cedulaInstructor) values 
+  ('2023-10-30','1234567897','Amarillo','0930766449'),
+  ('2023-10-30','1234567896','Verde','0930766449');  
 
 SELECT * FROM asistencia;
 SELECT * FROM instructor;
@@ -101,3 +137,19 @@ SELECT cedulaInstructor,correo, password, 	CONCAT(primerApellido,' ',primerNombr
 SELECT cedulaInstructor,correo, password, 	CONCAT(primerApellido,' ',primerNombre) AS Nombres, token, confirmado FROM instructor;
 
 update instructor set confirmado = 1 where cedulaInstructor = "1234567817";
+
+
+SELECT asistencia.idAsistencia, alumno.cedulaAlumno, 
+  alumno.primerApellido, alumno.primerNombre,asistencia.fechaRegistro, horario.idHorario,
+  horario.hoarioInicio, horario.hoarioFin, horario.cedulaInstructor
+  FROM asistencia inner join alumno on asistencia.cedulaAlumno = alumno.cedulaAlumno
+  inner join horario on horario.idHorario = asistencia.idHorario 
+  where horario.cedulaInstructor= '0930766449';
+
+
+" SELECT asistencia.idAsistencia, alumno.cedulaAlumno, alumno.primerApellido, alumno.primerNombre,asistencia.fechaRegistro, horario.idHorario,horario.hoarioInicio, horario.hoarioFin, horario.cedulaInstructor FROM asistencia join alumno on asistencia.cedulaAlumno = alumno.cedulaAlumno join horario on horario.idHorario = asistencia.idHorario WHERE horario.cedulaInstructor= ?;"
+
+const [rows] = await pool.query(" SELECT asistencia.idAsistencia, alumno.cedulaAlumno, alumno.primerApellido, alumno.primerNombre,asistencia.fechaRegistro, horario.idHorario,horario.hoarioInicio, horario.hoarioFin, horario.cedulaInstructor FROM asistencia join alumno on asistencia.cedulaAlumno = alumno.cedulaAlumno join horario on horario.idHorario = asistencia.idHorario WHERE horario.cedulaInstructor= ?;",[cedulaInstructor]);
+
+
+SELECT asenso.idAsenso, asenso.fechaAsenso, asenso.cedulaAlumno, alumno.primerApellido,alumno.primerNombre,asenso.cedulaInstructor, asenso.cinturon, instructor.cedulaInstructor FROM asenso join alumno on alumno.cedulaAlumno = asenso.cedulaAlumno join instructor on instructor.cedulaInstructor = asenso.cedulaInstructor WHERE instructor.cedulaInstructor='0930766449';

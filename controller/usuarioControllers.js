@@ -122,7 +122,7 @@ const olvidePassword = async (req, res) => {
   const [result] = await pool.query("SELECT * FROM instructor WHERE correo = ?", [
     correo,
   ]);
-  console.log(result);
+  //console.log(result);
 
   if (result.length == '') {
     const error = new Error('El usuario no existe');

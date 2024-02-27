@@ -7,6 +7,7 @@ import usuarioRoutes from "./routes/usuarioRoutes.js";
 import alumnoRoutes from "./routes/alumnoRoutes.js";
 import horarioRoutes from "./routes/horarioRoutes.js";
 import asistenciaRoutes from "./routes/asistenciaRoutes.js";
+import asensoRoutes from "./routes/asensoRoutes.js";
 import { pool } from "./db.js";
 
 
@@ -35,21 +36,18 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 
-app.get("/ping", async(req,res) => {
-    const [result] = await pool.query('SELECT "Pong" AS result')
-    res.json(result[0])
-});
+
 // Routing
 app.use("/api/usuarios", usuarioRoutes);
 app.use("/api/alumnos", alumnoRoutes);
 app.use("/api/horarios", horarioRoutes);
-app.use("/api/asitencias", asistenciaRoutes);
-
+app.use("/api/asistencias", asistenciaRoutes);
+app.use("/api/asensos", asensoRoutes);
 
 //NOT FOUND
 app.use((req, res, next) => {
     res.status(404).json({
-        message: 'endpoit not found'
+        message: 'Página no Encontrada'
     })
 });
 

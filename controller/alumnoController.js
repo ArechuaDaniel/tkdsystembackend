@@ -6,7 +6,7 @@ const obtenerAlumnos = async (req, res) => {
     
   try {
     
-    const [rows] = await pool.query("SELECT * FROM alumno WHERE cedulaInstructor = ?",[cedulaInstructor]);
+    const [rows] = await pool.query("SELECT * FROM alumno WHERE cedulaInstructor = ? ORDER BY primerApellido",[cedulaInstructor]);
     res.json(rows);
   } catch (error) {
     return res.status(500).json({ message: "No se puede Obtener los alumnos" });
@@ -16,7 +16,7 @@ const nuevoAlumno = async (req, res) => {
   
   
   try {
-    const {  cedulaAlumno ,primerApellido ,segundoApellido ,primerNombre  ,segundoNombre , fechaNacimiento ,direccion, fechaIngreso,telefono, ocupacion} = req.body;    
+    const {  cedulaAlumno ,primerApellido ,segundoApellido ,primerNombre  ,segundoNombre , fechaNacimiento ,direccion, fechaIngreso,telefono, ocupacion, estado} = req.body;    
 
     const cedulaInstructor= req.usuario[0][0].cedulaInstructor;
     
@@ -24,10 +24,10 @@ const nuevoAlumno = async (req, res) => {
     
         
         const [rows] = await pool.query(
-          "INSERT INTO alumno (cedulaAlumno ,primerApellido ,segundoApellido ,primerNombre  ,segundoNombre , fechaNacimiento ,direccion, fechaIngreso,telefono, ocupacion, cedulaInstructor) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)",
-          [cedulaAlumno ,primerApellido ,segundoApellido ,primerNombre  ,segundoNombre , fechaNacimiento ,direccion, fechaIngreso,telefono, ocupacion,cedulaInstructor]
+          "INSERT INTO alumno (cedulaAlumno ,primerApellido ,segundoApellido ,primerNombre  ,segundoNombre , fechaNacimiento ,direccion, fechaIngreso,telefono, ocupacion,estado, cedulaInstructor) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)",
+          [cedulaAlumno ,primerApellido ,segundoApellido ,primerNombre  ,segundoNombre , fechaNacimiento ,direccion, fechaIngreso,telefono, ocupacion,estado,cedulaInstructor]
         );
-        res.status(201).json({ id: rows.insertId, cedulaAlumno ,primerApellido ,segundoApellido ,primerNombre  ,segundoNombre , fechaNacimiento ,direccion, fechaIngreso,telefono, ocupacion, cedulaInstructor});
+        res.status(201).json({ id: rows.insertId, cedulaAlumno ,primerApellido ,segundoApellido ,primerNombre  ,segundoNombre , fechaNacimiento ,direccion, fechaIngreso,telefono, ocupacion,estado, cedulaInstructor});
       } catch (error) {
         return res.status(500).json({ message: "No se puede registrar alumno" });
       }

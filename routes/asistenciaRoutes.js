@@ -1,26 +1,26 @@
 import express  from "express";
 
 import {
-    obtenerHorarios,
-    obtenerHorario,
-    nuevoHorario,
-    editarHorario,
-    eliminarHorario,
-} from "../controller/horarioController.js"
+    obtenerAsistencias,
+    obtenerAsistencia,
+    nuevaAsistencia,
+    editarAsistencia,
+    eliminarAsitencia,
+} from "../controller/asistenicaController.js"
 
-//TODO: AGREGAR CHECKAUTH
 
+import checkAuth from "../middleware/checkAuth.js";
 const router = express.Router();
 
 router
     .route("/")
-    .get(obtenerHorarios)
-    .post(nuevoHorario)
+    .get(checkAuth,obtenerAsistencias)
+    .post(checkAuth,nuevaAsistencia)
 
 router
     .route('/:id')
-    .get(obtenerHorario)
-    .put(editarHorario)
-    .delete(eliminarHorario)
+    .get(checkAuth,obtenerAsistencia)
+    .put(checkAuth,editarAsistencia)
+    .delete(checkAuth,eliminarAsitencia)
 
 export default router;
