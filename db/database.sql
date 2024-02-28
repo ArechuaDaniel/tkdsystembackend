@@ -96,38 +96,40 @@ INSERT INTO asistencia (fechaRegistro,cedulaAlumno, idHorario) values
   ('2023-10-30','1202547898',1),
   ('2023-10-30','1234567810',4);
 
--- CREATE TABLE cinturon (
---   idCinturon INT NOT NULL AUTO_INCREMENT,
---   color VARCHAR(70) NOT NULL,
---   PRIMARY KEY(idCinturon) 
--- );
--- INSERT INTO cinturon (color) values 
---   ('Blanco'),
---   ('Blanco - Amarillo'),
---   ('Amarillo'),
---   ('Amarillo - Verde'),
---   ('Verde'),
---   ('Verde - Azul'),
---   ('Azul'),
---   ('Azul - Rojo'),
---   ('Rojo'),
---   ('Rojo - Negro'),
---   ('Negro')
---   ;  
+CREATE TABLE cinturon (
+  idCinturon INT NOT NULL AUTO_INCREMENT,
+  color VARCHAR(70) NOT NULL,
+  PRIMARY KEY(idCinturon) 
+);
+INSERT INTO cinturon (color) values 
+  ('Blanco'),
+  ('Blanco - Amarillo'),
+  ('Amarillo'),
+  ('Amarillo - Verde'),
+  ('Verde'),
+  ('Verde - Azul'),
+  ('Azul'),
+  ('Azul - Rojo'),
+  ('Rojo'),
+  ('Rojo - Negro'),
+  ('Negro')
+  ;  
 CREATE TABLE asenso (
   idAsenso INT NOT NULL AUTO_INCREMENT,
   fechaAsenso DATE,
   cedulaAlumno CHAR(10) NOT NULL,
-  cinturon ENUM("Blanco", "Blanco-Amarillo", "Amarillo", "Amarillo-Verde", "Verde","Verde-Azul", "Azul", "Azul-Rojo", "Rojo", "Rojo-Negro", "Negro"),
+  idCinturon INT,
+  -- cinturon ENUM("Blanco", "Blanco-Amarillo", "Amarillo", "Amarillo-Verde", "Verde","Verde-Azul", "Azul", "Azul-Rojo", "Rojo", "Rojo-Negro", "Negro"),
   cedulaInstructor CHAR(10) NOT NULL,
   PRIMARY KEY(idAsenso),
+  CONSTRAINT FK_idCinturon FOREIGN KEY (idCinturon) REFERENCES cinturon(idCinturon),
   CONSTRAINT FK_cedulaAlumno1 FOREIGN KEY (cedulaAlumno) REFERENCES alumno(cedulaAlumno),
   CONSTRAINT FK_cedulaInstructor FOREIGN KEY (cedulaInstructor) REFERENCES instructor(cedulaInstructor)
   
 );
-INSERT INTO asenso (fechaAsenso,cedulaAlumno, cinturon,cedulaInstructor) values 
-  ('2023-10-30','1234567897','Amarillo','0930766449'),
-  ('2023-10-30','1234567896','Verde','0930766449');  
+INSERT INTO asenso (fechaAsenso,cedulaAlumno, idCinturon,cedulaInstructor) values 
+  ('2023-10-30','1234567897','2','0930766449'),
+  ('2023-10-30','1234567896','3','0930766449');  
 
 SELECT * FROM asistencia;
 SELECT * FROM instructor;
@@ -152,4 +154,4 @@ SELECT asistencia.idAsistencia, alumno.cedulaAlumno,
 const [rows] = await pool.query(" SELECT asistencia.idAsistencia, alumno.cedulaAlumno, alumno.primerApellido, alumno.primerNombre,asistencia.fechaRegistro, horario.idHorario,horario.hoarioInicio, horario.hoarioFin, horario.cedulaInstructor FROM asistencia join alumno on asistencia.cedulaAlumno = alumno.cedulaAlumno join horario on horario.idHorario = asistencia.idHorario WHERE horario.cedulaInstructor= ?;",[cedulaInstructor]);
 
 
-SELECT asenso.idAsenso, asenso.fechaAsenso, asenso.cedulaAlumno, alumno.primerApellido,alumno.primerNombre,asenso.cedulaInstructor, asenso.cinturon, instructor.cedulaInstructor FROM asenso join alumno on alumno.cedulaAlumno = asenso.cedulaAlumno join instructor on instructor.cedulaInstructor = asenso.cedulaInstructor WHERE instructor.cedulaInstructor='0930766449';
+SELECT asenso.idAsenso, asenso.fechaAsenso, asenso.cedulaAlumno, alumno.primerApellido,alumno.primerNombre,asenso.cedulaInstructor, asenso.idCinturon,cinturon.color FROM asenso join alumno on alumno.cedulaAlumno = asenso.cedulaAlumno join instructor on instructor.cedulaInstructor = asenso.cedulaInstructor join cinturon on cinturon.idCinturon = asenso.idCinturon WHERE instructor.cedulaInstructor='0930766449';
