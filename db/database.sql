@@ -100,20 +100,21 @@ CREATE TABLE cinturon (
   idCinturon INT NOT NULL AUTO_INCREMENT,
   asensoColor VARCHAR(70) NOT NULL,
   color VARCHAR(70) NOT NULL,
+  color2 VARCHAR(70),
   PRIMARY KEY(idCinturon) 
 );
-INSERT INTO cinturon (asensoColor,color) values 
-  ('Blanco', 'white'),
-  ('Blanco - Amarillo','yellow'),
-  ('Amarillo', 'yellow'),
-  ('Amarillo - Verde', 'green'),
-  ('Verde','green'),
-  ('Verde - Azul','blue'),
-  ('Azul', 'blue'),
-  ('Azul - Rojo', 'red'),
-  ('Rojo','red'),
-  ('Rojo - Negro', 'black'),
-  ('Negro', 'black')
+INSERT INTO cinturon (asensoColor,color,color2) values 
+  ('Blanco', 'white', null),
+  ('Blanco - Amarillo','white','yellow'),
+  ('Amarillo', 'yellow', null),
+  ('Amarillo - Verde','yellow' ,'green'),
+  ('Verde','green', null),
+  ('Verde - Azul','green','blue'),
+  ('Azul', 'blue',null),
+  ('Azul - Rojo', 'blue','red'),
+  ('Rojo','red', null),
+  ('Rojo - Negro','red', 'black'),
+  ('Negro', 'black', null)
   ;  
 CREATE TABLE asenso (
   idAsenso INT NOT NULL AUTO_INCREMENT,
