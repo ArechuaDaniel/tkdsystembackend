@@ -98,21 +98,22 @@ INSERT INTO asistencia (fechaRegistro,cedulaAlumno, idHorario) values
 
 CREATE TABLE cinturon (
   idCinturon INT NOT NULL AUTO_INCREMENT,
+  asensoColor VARCHAR(70) NOT NULL,
   color VARCHAR(70) NOT NULL,
   PRIMARY KEY(idCinturon) 
 );
-INSERT INTO cinturon (color) values 
-  ('Blanco'),
-  ('Blanco - Amarillo'),
-  ('Amarillo'),
-  ('Amarillo - Verde'),
-  ('Verde'),
-  ('Verde - Azul'),
-  ('Azul'),
-  ('Azul - Rojo'),
-  ('Rojo'),
-  ('Rojo - Negro'),
-  ('Negro')
+INSERT INTO cinturon (asensoColor,color) values 
+  ('Blanco', 'white'),
+  ('Blanco - Amarillo','yellow'),
+  ('Amarillo', 'yellow'),
+  ('Amarillo - Verde', 'green'),
+  ('Verde','green'),
+  ('Verde - Azul','blue'),
+  ('Azul', 'blue'),
+  ('Azul - Rojo', 'red'),
+  ('Rojo','red'),
+  ('Rojo - Negro', 'black'),
+  ('Negro', 'black')
   ;  
 CREATE TABLE asenso (
   idAsenso INT NOT NULL AUTO_INCREMENT,

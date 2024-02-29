@@ -8,7 +8,7 @@ const obtenerAsistencias = async (req, res) => {
   try {
     
     // const [rows] = await pool.query("SELECT * FROM asistencia ");
-    const [rows] = await pool.query(" SELECT asistencia.idAsistencia, alumno.cedulaAlumno, alumno.primerApellido, alumno.primerNombre,asistencia.fechaRegistro, horario.idHorario,horario.hoarioInicio, horario.hoarioFin, horario.cedulaInstructor FROM asistencia join alumno on asistencia.cedulaAlumno = alumno.cedulaAlumno join horario on horario.idHorario = asistencia.idHorario WHERE horario.cedulaInstructor= ? ORDER BY asistencia.fechaRegistro DESC , alumno.primerApellido;",[cedulaInstructor]);
+    const [rows] = await pool.query(" SELECT asistencia.idAsistencia, alumno.cedulaAlumno, alumno.primerApellido, alumno.primerNombre,asistencia.fechaRegistro, horario.idHorario,horario.hoarioInicio, horario.hoarioFin, horario.cedulaInstructor FROM asistencia join alumno on asistencia.cedulaAlumno = alumno.cedulaAlumno join horario on horario.idHorario = asistencia.idHorario WHERE horario.cedulaInstructor= ? ORDER BY asistencia.fechaRegistro DESC , horario.hoarioInicio DESC;",[cedulaInstructor]);
     res.json(rows);
   } catch (error) {
     return res.status(500).json({ message: "No se puede Obtener las asistencias" });
