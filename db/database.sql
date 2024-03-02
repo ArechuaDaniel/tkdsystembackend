@@ -133,6 +133,26 @@ INSERT INTO asenso (fechaAsenso,cedulaAlumno, idCinturon,cedulaInstructor) value
   ('2023-10-30','1234567897','2','0930766449'),
   ('2023-10-30','1234567896','3','0930766449');  
 
+
+
+
+
+CREATE TABLE pago (
+  idPago INT NOT NULL AUTO_INCREMENT,
+  fechaPago DATE,
+  mesPago DATE,
+  cedulaAlumno CHAR(10) NOT NULL,
+  formaPago ENUM("Efectivo","Transferencia","Deposito") NOT NULL,
+  comprobante VARCHAR(55), 
+  cedulaInstructor CHAR(10) NOT NULL,
+  PRIMARY KEY(idPago),
+  CONSTRAINT FK_cedulaInstructor1 FOREIGN KEY (cedulaInstructor) REFERENCES instructor(cedulaInstructor),
+  CONSTRAINT FK_cedulaAlumno2 FOREIGN KEY (cedulaAlumno) REFERENCES alumno(cedulaAlumno)
+);
+INSERT INTO pago (fechaPago,mesPago,cedulaAlumno, formaPago, comprobante,cedulaInstructor) values 
+  ('2024-03-01','2024-03-01','1234567897','Efectivo',null,'0930766449'),
+  ('2024-03-01','2024-03-01','1234567896','Transferencia','4565988745','0930766449'); 
+
 SELECT * FROM asistencia;
 SELECT * FROM instructor;
 SELECT cedulaInstructor, password, primerApellido FROM instructor;
@@ -157,3 +177,6 @@ const [rows] = await pool.query(" SELECT asistencia.idAsistencia, alumno.cedulaA
 
 
 SELECT asenso.idAsenso, asenso.fechaAsenso, asenso.cedulaAlumno, alumno.primerApellido,alumno.primerNombre,asenso.cedulaInstructor, asenso.idCinturon,cinturon.color FROM asenso join alumno on alumno.cedulaAlumno = asenso.cedulaAlumno join instructor on instructor.cedulaInstructor = asenso.cedulaInstructor join cinturon on cinturon.idCinturon = asenso.idCinturon WHERE instructor.cedulaInstructor='0930766449';
+
+
+SELECT pago.idPago, pago.fechaPago, pago.mesPago,  pago.formaPago, pago.comprobante,pago.cedulaInstructor,alumno.cedulaAlumno, alumno.primerApellido, alumno.primerNombre FROM pago RIGHT JOIN alumno on alumno.cedulaAlumno = pago.cedulaAlumno WHERE pago.cedulaInstructor = '0930766449';

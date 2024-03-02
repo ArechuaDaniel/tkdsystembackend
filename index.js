@@ -9,6 +9,7 @@ import horarioRoutes from "./routes/horarioRoutes.js";
 import asistenciaRoutes from "./routes/asistenciaRoutes.js";
 import asensoRoutes from "./routes/asensoRoutes.js";
 import cinturonRoutes from "./routes/cinturonRoutes.js"
+import pagosRoutes from "./routes/pagosRoutes.js"
 import { pool } from "./db.js";
 
 
@@ -45,6 +46,7 @@ app.use("/api/horarios", horarioRoutes);
 app.use("/api/asistencias", asistenciaRoutes);
 app.use("/api/asensos", asensoRoutes);
 app.use("/api/cinturones", cinturonRoutes);
+app.use("/api/pagos", pagosRoutes);
 
 //NOT FOUND
 app.use((req, res, next) => {

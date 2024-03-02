@@ -77,7 +77,7 @@ const eliminarHorario = async (req, res) => {
   try {
     const { id } = req.params;
     const cedulaInstructor= req.usuario[0][0].cedulaInstructor;
-    const [rows] = await pool.query("DELETE FROM horario WHERE idHorario = ? and cedulaInstructor = ?", [id, cedulaInstructor]);
+    const [rows] = await pool.query("DELETE FROM horario WHERE idHorario = ? and cedulaInstructor = ? ;", [id, cedulaInstructor]);
 
     if (rows.affectedRows <= 0) {
       return res.status(404).json({ message: "Horario no se encuentra" });
@@ -85,7 +85,7 @@ const eliminarHorario = async (req, res) => {
 
     return res.sendStatus(204);
   } catch (error) {
-    return res.status(500).json({ message: "Something goes wrong" });
+    return res.status(500).json({ message: "No se puede eliminar Horario" });
   }
 }
 

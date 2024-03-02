@@ -76,11 +76,23 @@ const editarAsenso = async (req, res) => {
     res.json(rows[0]);
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "No se puede editar el horario" });
+    return res.status(500).json({ message: "No se puede editar el asenso" });
   }
 }
 const eliminarAsenso = async (req, res) => {
-   
+  try {
+    const { id } = req.params;
+    const cedulaInstructor= req.usuario[0][0].cedulaInstructor;
+    const [rows] = await pool.query("DELETE FROM asenso WHERE idAsenso = ? and cedulaInstructor = ? ", [id, cedulaInstructor]);
+
+    if (rows.affectedRows <= 0) {
+      return res.status(404).json({ message: "Asenso no se encuentra" });
+    }
+
+    return res.sendStatus(204);
+  } catch (error) {
+    return res.status(500).json({ message: "No se puede eliminar asenso" });
+  }
 }
 
 export {
