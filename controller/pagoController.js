@@ -6,7 +6,7 @@ const obtenerPagos = async (req, res) => {
   try {
     
     // const [rows] = await pool.query("SELECT * FROM asistencia ");
-    const [rows] = await pool.query(" SELECT pago.idPago, pago.fechaPago, pago.mesPago,  pago.formaPago, pago.comprobante,pago.cedulaInstructor,alumno.cedulaAlumno, alumno.primerApellido, alumno.primerNombre FROM pago RIGHT JOIN alumno on alumno.cedulaAlumno = pago.cedulaAlumno WHERE pago.cedulaInstructor =  ? ;",[cedulaInstructor]);
+    const [rows] = await pool.query(" SELECT pago.idPago, pago.fechaPago, pago.mesPago,  pago.formaPago, pago.comprobante,pago.cedulaInstructor,alumno.cedulaAlumno, alumno.primerApellido, alumno.primerNombre FROM pago RIGHT JOIN alumno on alumno.cedulaAlumno = pago.cedulaAlumno WHERE pago.cedulaInstructor =  ? ORDER BY pago.fechaPago DESC, alumno.primerApellido;",[cedulaInstructor]);
     
     
     res.json(rows);

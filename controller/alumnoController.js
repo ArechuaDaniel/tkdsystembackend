@@ -16,7 +16,7 @@ const nuevoAlumno = async (req, res) => {
   
   
   try {
-    const {  cedulaAlumno ,primerApellido ,segundoApellido ,primerNombre  ,segundoNombre , fechaNacimiento ,direccion, fechaIngreso,telefono, ocupacion, estado} = req.body;    
+    const {  cedulaAlumno ,primerApellido ,segundoApellido ,primerNombre  ,segundoNombre , fechaNacimiento ,direccion, fechaIngreso,telefono, ocupacion, estado,genero,tipoSangre,} = req.body;    
 
     const cedulaInstructor= req.usuario[0][0].cedulaInstructor;
     
@@ -24,10 +24,10 @@ const nuevoAlumno = async (req, res) => {
     
         
         const [rows] = await pool.query(
-          "INSERT INTO alumno (cedulaAlumno ,primerApellido ,segundoApellido ,primerNombre  ,segundoNombre , fechaNacimiento ,direccion, fechaIngreso,telefono, ocupacion,estado, cedulaInstructor) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)",
-          [cedulaAlumno ,primerApellido ,segundoApellido ,primerNombre  ,segundoNombre , fechaNacimiento ,direccion, fechaIngreso,telefono, ocupacion,estado,cedulaInstructor]
+          "INSERT INTO alumno (cedulaAlumno ,primerApellido ,segundoApellido ,primerNombre  ,segundoNombre , fechaNacimiento ,direccion, fechaIngreso,telefono, ocupacion,estado, genero,tipoSangre,cedulaInstructor) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?)",
+          [cedulaAlumno ,primerApellido ,segundoApellido ,primerNombre  ,segundoNombre , fechaNacimiento ,direccion, fechaIngreso,telefono, ocupacion,estado,genero,tipoSangre,cedulaInstructor]
         );
-        res.status(201).json({ id: rows.insertId, cedulaAlumno ,primerApellido ,segundoApellido ,primerNombre  ,segundoNombre , fechaNacimiento ,direccion, fechaIngreso,telefono, ocupacion,estado, cedulaInstructor});
+        res.status(201).json({ id: rows.insertId, cedulaAlumno ,primerApellido ,segundoApellido ,primerNombre  ,segundoNombre , fechaNacimiento ,direccion, fechaIngreso,telefono, ocupacion,estado,genero,tipoSangre, cedulaInstructor});
       } catch (error) {
         return res.status(500).json({ message: "No se puede registrar alumno" });
       }
@@ -53,11 +53,11 @@ const editarAlumno = async (req, res) => {
   try {
     const { id } = req.params;
     const cedulaInstructor= req.usuario[0][0].cedulaInstructor;
-    const { cedulaAlumno ,primerApellido ,segundoApellido ,primerNombre  ,segundoNombre , fechaNacimiento ,direccion, fechaIngreso,telefono, ocupacion } = req.body;
+    const { cedulaAlumno ,primerApellido ,segundoApellido ,primerNombre  ,segundoNombre , fechaNacimiento ,direccion, fechaIngreso,telefono, ocupacion,estado,genero,tipoSangre } = req.body;
     
     const [result] = await pool.query(
-      "UPDATE alumno SET cedulaAlumno = IFNULL(?, cedulaAlumno), primerApellido = IFNULL(?, primerApellido), segundoApellido = IFNULL(?, segundoApellido), primerNombre = IFNULL(?, primerNombre), segundoNombre = IFNULL(?, segundoNombre), fechaNacimiento = IFNULL(?, fechaNacimiento), direccion = IFNULL(?, direccion), fechaIngreso = IFNULL(?, fechaIngreso), telefono = IFNULL(?, telefono), ocupacion = IFNULL(?, ocupacion)  WHERE cedulaAlumno = ? and cedulaInstructor = ?",
-      [cedulaAlumno ,primerApellido ,segundoApellido ,primerNombre  ,segundoNombre , fechaNacimiento ,direccion, fechaIngreso,telefono, ocupacion , id, cedulaInstructor ]
+      "UPDATE alumno SET cedulaAlumno = IFNULL(?, cedulaAlumno), primerApellido = IFNULL(?, primerApellido), segundoApellido = IFNULL(?, segundoApellido), primerNombre = IFNULL(?, primerNombre), segundoNombre = IFNULL(?, segundoNombre), fechaNacimiento = IFNULL(?, fechaNacimiento), direccion = IFNULL(?, direccion), fechaIngreso = IFNULL(?, fechaIngreso), telefono = IFNULL(?, telefono), ocupacion = IFNULL(?, ocupacion), estado = IFNULL(?, estado) , genero = IFNULL(?, genero),tipoSangre = IFNULL(?, tipoSangre)   WHERE cedulaAlumno = ? and cedulaInstructor = ?",
+      [cedulaAlumno ,primerApellido ,segundoApellido ,primerNombre  ,segundoNombre , fechaNacimiento ,direccion, fechaIngreso,telefono, ocupacion, estado,genero,tipoSangre , id, cedulaInstructor ]
     );
     
 
@@ -87,7 +87,7 @@ const eliminarAlumno = async (req, res) => {
 
     return res.sendStatus(204);
   } catch (error) {
-    return res.status(500).json({ message: "Something goes wrong" });
+    return res.status(500).json({ message: "No se puede eliminar Alumno" });
   }
 }
 

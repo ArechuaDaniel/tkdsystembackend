@@ -45,6 +45,8 @@ CREATE TABLE alumno (
   fechaNacimiento DATE,
   direccion VARCHAR(80) DEFAULT NULL,
   fechaIngreso DATE,
+  genero ENUM("Masculino", "Femenino","Otros" ),
+  tipoSangre ENUM("AB+", "AB-","A+", "A-","B+", "B-","O+", "O-"),
   telefono CHAR(10) DEFAULT NULL,
   ocupacion ENUM("Estudiante", "Trabaja", "Otros" ),
   estado ENUM("Activo", "Inactivo" ),
