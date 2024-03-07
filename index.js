@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 import cors from "cors";
 import {PORT} from "./config.js";
 
+import clubRoutes from "./routes/club/clubRoutes.js";
+import instructorRoutes from "./routes/instructorRoutes.js";
 import usuarioRoutes from "./routes/usuarioRoutes.js";
 import alumnoRoutes from "./routes/alumnoRoutes.js";
 import horarioRoutes from "./routes/horarioRoutes.js";
@@ -10,8 +12,6 @@ import asistenciaRoutes from "./routes/asistenciaRoutes.js";
 import asensoRoutes from "./routes/asensoRoutes.js";
 import cinturonRoutes from "./routes/cinturonRoutes.js"
 import pagosRoutes from "./routes/pagosRoutes.js"
-import { pool } from "./db.js";
-
 
 
 const app = express();
@@ -37,9 +37,14 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
+// Routing Club
+app.use("/api/club", clubRoutes);
 
 
-// Routing
+
+
+// Routing Instructor
+app.use("/api/instructor", instructorRoutes);
 app.use("/api/usuarios", usuarioRoutes);
 app.use("/api/alumnos", alumnoRoutes);
 app.use("/api/horarios", horarioRoutes);

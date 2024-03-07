@@ -1,6 +1,23 @@
-drop database systemtkdbd;
+drop database systemtkdbd1;
 CREATE DATABASE IF NOT EXISTS systemtkdbd;
 USE systemtkdbd;
+
+CREATE TABLE asociacion (
+  idAsociacion INT NOT NULL AUTO_INCREMENT,
+  asociacion VARCHAR(45) NOT NULL,
+  director VARCHAR(45) NOT NULL,
+  fechaAfiliacion DATE,
+  telefono CHAR(10) DEFAULT NULL,
+  password VARCHAR(200) NOT NULL,
+  correo CHAR(45) NOT NULL,
+  idParroquia BIGINT(20) NOT NULL,
+  token CHAR(45),
+  confirmado boolean DEFAULT false,
+  PRIMARY KEY(idAsociacion),
+  FOREIGN KEY (idParroquia) REFERENCES parroquia(idParroquia) 
+);
+INSERT INTO asociacion (asociacion,director,fechaAfiliacion,telefono,password,correo,idParroquia) values 
+  ('Asociación de Pichincha','Juanito','2000-10-10','0960073310','123456','asociacionpichincha@correo.com','1069');
 
 CREATE TABLE club (
   idClub INT NOT NULL AUTO_INCREMENT,
@@ -9,10 +26,16 @@ CREATE TABLE club (
   direccion VARCHAR(80) DEFAULT NULL,
   fechaAfiliacion DATE,
   telefono CHAR(10) DEFAULT NULL,
-  PRIMARY KEY(idClub) 
+  password VARCHAR(200) NOT NULL,
+  correo CHAR(45) NOT NULL,
+  idAsociacion INT NOT NULL,
+  token CHAR(45),
+  confirmado boolean DEFAULT false,
+  PRIMARY KEY(idClub),
+  FOREIGN KEY (idAsociacion) REFERENCES asociacion(idAsociacion) 
 );
-INSERT INTO club (club,director,direccion,fechaAfiliacion,telefono) values 
-  ('Club Apolo','Pinto Mario','Carapungo','2000-10-10','0960073310');
+INSERT INTO club (club,director,direccion,fechaAfiliacion,telefono, correo,password,idAsociacion) values 
+  ('Club Apolo','Pinto Mario','Carapungo','2000-10-10','0960073310','','','1');
 
 CREATE TABLE instructor (
   cedulaInstructor CHAR(15) NOT NULL,
@@ -22,17 +45,19 @@ CREATE TABLE instructor (
   segundoApellido VARCHAR(45) DEFAULT NULL,
   primerNombre VARCHAR(45) NOT NULL,
   segundoNombre VARCHAR(45) DEFAULT NULL,
+  fechaNacimiento DATE,
   direccion VARCHAR(80) DEFAULT NULL,
   fechaRegistro DATE,
   telefono CHAR(10) DEFAULT NULL,
+  genero ENUM("Masculino", "Femenino","Otros" ),
   idClub INT NOT NULL,
   token CHAR(45),
   confirmado boolean DEFAULT false,
   PRIMARY KEY(cedulaInstructor),
   FOREIGN KEY (idClub) REFERENCES club(idClub)
 );
-INSERT INTO instructor (cedulaInstructor,correo,password,primerApellido,segundoApellido,primerNombre,segundoNombre,direccion,fechaRegistro,telefono,idClub, confirmado) values 
-  ('1234567811','correo@correo.com','123456','Sabonim','ken','Mario','Doe','Carapungo','2019-12-31','0999999999','1', '1');
+INSERT INTO instructor (cedulaInstructor,correo,password,primerApellido,segundoApellido,primerNombre,segundoNombre,fechaNacimiento,direccion,fechaRegistro,telefono,genero,idClub, confirmado) values 
+  ('1234567811','correo@correo.com','123456','Sabonim','ken','Mario','Doe','1990-12-31','Carapungo','2019-12-31','0999999999','Masculino','1', '1');
 
 SELECT * FROM club;
 
@@ -182,3 +207,14 @@ SELECT asenso.idAsenso, asenso.fechaAsenso, asenso.cedulaAlumno, alumno.primerAp
 
 
 SELECT pago.idPago, pago.fechaPago, pago.mesPago,  pago.formaPago, pago.comprobante,pago.cedulaInstructor,alumno.cedulaAlumno, alumno.primerApellido, alumno.primerNombre FROM pago RIGHT JOIN alumno on alumno.cedulaAlumno = pago.cedulaAlumno WHERE pago.cedulaInstructor = '0930766449';
+
+SELECT instructor.cedulaInstructor,instructor.primerApellido,instructor.segundoApellido,instructor.primerNombre,instructor.segundoNombre,instructor.fechaNacimiento,instructor.direccion,instructor.fechaRegistro,instructor.telefono,instructor.correo,instructor.genero,instructor.idClub, club.club FROM instructor JOIN club ON club.idClub = instructor.idClub WHERE instructor.cedulaInstructor = '0930766449' ;
+
+SELECT pais.pais, provincia.provincia, canton.canton FROM pais JOIN provincia ON provincia.idPais = pais.idPais JOIN canton ON canton.idProvincia = provincia.idProvincia WHERE canton.idCanton = '178';
+
+SELECT pais.pais, provincia.provincia, canton.canton FROM pais JOIN provincia ON provincia.idPais = pais.idPais JOIN canton ON canton.idProvincia = provincia.idProvincia WHERE canton.idCanton = '178';
+
+
+
+-- CONSULTA DE PAIS PROVINCIA CANTON PARROQUIA
+select asociacion.asociacion, parroquia.parroquia, canton.canton, provincia.provincia, pais.pais from asociacion JOIN parroquia ON parroquia.idParroquia = asociacion.idParroquia JOIN canton ON canton.idCanton = parroquia.idCanton JOIN provincia ON provincia.idProvincia = canton.idProvincia JOIN pais ON pais.idPais = provincia.idPais;

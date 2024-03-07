@@ -1,9 +1,9 @@
-import generarId from "../helpers/generarId.js";
+import generarId from "../../helpers/generarId.js";
 //import generarJWT from "../helpers/generarJWT.js";
-import { pool } from "../db.js";
+import { pool } from "../../db.js";
 import bcryptjs from 'bcryptjs'
-import generarJWT from "../helpers/generarJWT.js";
-import {emailOlvidePassword, emailRegistro}  from "../helpers/email.js";
+import generarJWT from "../../helpers/generarJWT.js";
+import {emailOlvidePassword, emailRegistro}  from "../../helpers/email.js";
 
 
 
