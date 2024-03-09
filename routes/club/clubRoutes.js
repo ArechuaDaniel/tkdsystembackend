@@ -8,7 +8,8 @@ import {
     nuevoPassword, perfil  
 } from "../../controller/club/clubController.js";
 // import checkAuth from "../middleware/checkAuth.js";
-import checkAuth from "../../middleware/checkAuth.js";
+
+import checkAuthClub from "../../middleware/checkAuthClub.js";
 
 
 const router = express.Router();
@@ -19,5 +20,5 @@ router.post("/login", autenticar);
 router.get('/confirmar/:token', confirmar)
 router.post('/olvide-password', olvidePassword);
 router.route('/olvide-password/:token').get(comprobarToken).post(nuevoPassword)
-router.get('/perfil',checkAuth, perfil);
+router.get('/perfil',checkAuthClub, perfil);
 export default router;

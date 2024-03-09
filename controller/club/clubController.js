@@ -1,5 +1,4 @@
 import generarId from "../../helpers/generarId.js";
-//import generarJWT from "../helpers/generarJWT.js";
 import { pool } from "../../db.js";
 import bcryptjs from 'bcryptjs'
 import generarJWT from "../../helpers/generarJWT.js";
@@ -60,7 +59,7 @@ const autenticar = async (req, res) => {
 
     //COMPROBAR SI EL USUARIO EXISTE    
 
-    const [result] = await pool.query("SELECT * FROM instructor WHERE correo = ?", [
+    const [result] = await pool.query("SELECT * FROM club WHERE correo = ?", [
       correo,
     ]);
 
@@ -82,9 +81,9 @@ const autenticar = async (req, res) => {
     const compare = bcryptjs.compareSync(password, hashSaved);
     if (compare) {
       res.json({
-        primerApellido: result[0].primerApellido,
+        director: result[0].director,
         correo,
-        token: generarJWT(result[0].cedulaInstructor),
+        token: generarJWT(result[0].idClub),
       })
     } else {
       const error = new Error('El Password es Incorrecto');
@@ -98,7 +97,7 @@ const confirmar = async (req, res) => {
 
   try {
     const { token } = req.params;
-    const [result] = await pool.query("SELECT * FROM instructor WHERE token = ?", [
+    const [result] = await pool.query("SELECT * FROM club WHERE token = ?", [
       token,
     ]);
     // if (result.length == '') {
@@ -107,7 +106,7 @@ const confirmar = async (req, res) => {
     // }
 
     await pool.query(
-      "UPDATE instructor SET confirmado = ?,token = ?  WHERE token = ?",
+      "UPDATE club SET confirmado = ?,token = ?  WHERE token = ?",
       [1, '', token]
     );
     res.json({ msg: "Usuario Confirmado Correctamente" })
@@ -120,7 +119,7 @@ const olvidePassword = async (req, res) => {
   const { correo,primerApellido,primerNombre } = req.body;
   //COMPROBAR SI EL USUARIO EXISTE    
 
-  const [result] = await pool.query("SELECT * FROM instructor WHERE correo = ?", [
+  const [result] = await pool.query("SELECT * FROM club WHERE correo = ?", [
     correo,
   ]);
   //console.log(result);
@@ -131,14 +130,16 @@ const olvidePassword = async (req, res) => {
   }
   try {
     const token = generarId();
+    
+    const director = result[0].director;
+    console.log(director);
     await pool.query(
-      "UPDATE instructor SET token = ?  WHERE correo = ?",
+      "UPDATE club SET token = ?  WHERE correo = ?",
       [token, correo]
     );
     // Enviar Email
     emailOlvidePassword({
-        primerApellido,
-        primerNombre,
+        director,
         correo,
         token
     })
@@ -149,7 +150,7 @@ const olvidePassword = async (req, res) => {
 }
 const comprobarToken = async (req, res) => {
   const { token } = req.params;
-  const [result] = await pool.query("SELECT * FROM instructor WHERE token = ?", [
+  const [result] = await pool.query("SELECT * FROM club WHERE token = ?", [
     token,
   ]);
   if (result.length == '') {
@@ -162,7 +163,7 @@ const comprobarToken = async (req, res) => {
 const nuevoPassword = async (req, res) => {
   const { token } = req.params;
   const { password } = req.body;
-  const [result] = await pool.query("SELECT * FROM instructor WHERE token = ?", [
+  const [result] = await pool.query("SELECT * FROM club WHERE token = ?", [
     token,
   ]);
   if (result.length == '') {
@@ -172,7 +173,7 @@ const nuevoPassword = async (req, res) => {
     try {
       var passwordHash = await bcryptjs.hash(password, 10);
       await pool.query(
-        "UPDATE instructor SET token = ?, password=?  WHERE token = ?",
+        "UPDATE club SET token = ?, password=?  WHERE token = ?",
         ['', passwordHash, token]
       );
       res.json({ msg: "Password Modificado Correctamente" })

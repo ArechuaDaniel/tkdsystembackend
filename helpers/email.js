@@ -30,21 +30,27 @@ export const emailOlvidePassword = async (datos) => {
     const {primerApellido,primerNombre,correo,token} = datos;
     
     const transport = nodemailer.createTransport({
-       host: process.env.EMAIL_HOST,
-       port: process.env.EMAIL_PORT,
-       auth: {
-         user: process.env.EMAIL_USER,
-         pass: process.env.EMAIL_PASS,
-       }
+      service: 'gmail',
+      auth: {
+        user: 'daniel.arechua.alex@gmail.com',
+        pass: 'lhpp bobg qazr sggu'
+      }
+
+      //  host: process.env.EMAIL_HOST,
+      //  port: process.env.EMAIL_PORT,
+      //  auth: {
+      //    user: process.env.EMAIL_USER,
+      //    pass: process.env.EMAIL_PASS,
+      //  }
      });
 
      //Información del email
      const info = await transport.sendMail({
-       from: '"Sistema TKD Administrador" <cuenta@sistema.com>',
+       from: '"ODSMARTECH Sistema TKD Administrador" <cuenta@sistema.com>',
        to: correo,
        subject: "ODSMARTECH - Sistema TKD - Reestablece tu Password",
        text: "Reestablece tu Password",
-       html: `<p>Hola: ${primerNombre} has solicitado Reestablecer tu Password</p>
+       html: `<p>Hola: ${primerNombre} ${primerApellido} has solicitado Reestablecer tu Password</p>
        <p>Sigue el siguiente enlace para generar un nuevo Password:
        <a href="${process.env.FRONTEND_URL}/tkdsystem/olvide-password/${token}">Reestablece tu Password</a>
        </p>

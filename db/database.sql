@@ -1,6 +1,6 @@
 drop database systemtkdbd1;
-CREATE DATABASE IF NOT EXISTS systemtkdbd;
-USE systemtkdbd;
+CREATE DATABASE IF NOT EXISTS systemtkdbd1;
+USE systemtkdbd1;
 
 CREATE TABLE asociacion (
   idAsociacion INT NOT NULL AUTO_INCREMENT,
@@ -11,31 +11,34 @@ CREATE TABLE asociacion (
   password VARCHAR(200) NOT NULL,
   correo CHAR(45) NOT NULL,
   idParroquia BIGINT(20) NOT NULL,
+  direccion VARCHAR(80) NOT NULL,
   token CHAR(45),
   confirmado boolean DEFAULT false,
   PRIMARY KEY(idAsociacion),
   FOREIGN KEY (idParroquia) REFERENCES parroquia(idParroquia) 
 );
-INSERT INTO asociacion (asociacion,director,fechaAfiliacion,telefono,password,correo,idParroquia) values 
-  ('Asociación de Pichincha','Juanito','2000-10-10','0960073310','123456','asociacionpichincha@correo.com','1069');
+INSERT INTO asociacion (asociacion,director,fechaAfiliacion,telefono,password,correo,idParroquia, direccion) values 
+  ('Asociación de Pichincha','Juanito','2000-10-10','0960073310','123456','asociacionpichincha@correo.com','1069','Carretas');
 
 CREATE TABLE club (
   idClub INT NOT NULL AUTO_INCREMENT,
   club VARCHAR(45) NOT NULL,
   director VARCHAR(45) NOT NULL,
-  direccion VARCHAR(80) DEFAULT NULL,
   fechaAfiliacion DATE,
   telefono CHAR(10) DEFAULT NULL,
   password VARCHAR(200) NOT NULL,
   correo CHAR(45) NOT NULL,
   idAsociacion INT NOT NULL,
+  idParroquia BIGINT(20) NOT NULL,
+  direccion VARCHAR(80) NOT NULL,
   token CHAR(45),
   confirmado boolean DEFAULT false,
   PRIMARY KEY(idClub),
+  FOREIGN KEY (idParroquia) REFERENCES parroquia(idParroquia), 
   FOREIGN KEY (idAsociacion) REFERENCES asociacion(idAsociacion) 
 );
-INSERT INTO club (club,director,direccion,fechaAfiliacion,telefono, correo,password,idAsociacion) values 
-  ('Club Apolo','Pinto Mario','Carapungo','2000-10-10','0960073310','','','1');
+INSERT INTO club (club,director,fechaAfiliacion,telefono, correo,password,idAsociacion,idParroquia,direccion) values 
+  ('Club Apolo','Pinto Mario','2000-10-10','0960073310','clubapolo@correo.com','123456','1','1069','Carapungo');
 
 CREATE TABLE instructor (
   cedulaInstructor CHAR(15) NOT NULL,
@@ -47,6 +50,7 @@ CREATE TABLE instructor (
   segundoNombre VARCHAR(45) DEFAULT NULL,
   fechaNacimiento DATE,
   direccion VARCHAR(80) DEFAULT NULL,
+  idParroquia BIGINT(20) NOT NULL,
   fechaRegistro DATE,
   telefono CHAR(10) DEFAULT NULL,
   genero ENUM("Masculino", "Femenino","Otros" ),
@@ -54,12 +58,13 @@ CREATE TABLE instructor (
   token CHAR(45),
   confirmado boolean DEFAULT false,
   PRIMARY KEY(cedulaInstructor),
+  FOREIGN KEY (idParroquia) REFERENCES parroquia(idParroquia), 
   FOREIGN KEY (idClub) REFERENCES club(idClub)
 );
-INSERT INTO instructor (cedulaInstructor,correo,password,primerApellido,segundoApellido,primerNombre,segundoNombre,fechaNacimiento,direccion,fechaRegistro,telefono,genero,idClub, confirmado) values 
-  ('1234567811','correo@correo.com','123456','Sabonim','ken','Mario','Doe','1990-12-31','Carapungo','2019-12-31','0999999999','Masculino','1', '1');
+INSERT INTO instructor (cedulaInstructor,correo,password,primerApellido,segundoApellido,primerNombre,segundoNombre,fechaNacimiento,idParroquia,direccion,fechaRegistro,telefono,genero,idClub, confirmado) values 
+  ('0930766449','daniel.ar98@hotmail.com','123456','Arechua','Pincay','Daniel','Doe','1990-12-31','1069','Carapungo','2019-12-31','0999999999','Masculino','1', '1');
 
-SELECT * FROM club;
+
 
 CREATE TABLE alumno (
   cedulaAlumno CHAR(10) NOT NULL,
@@ -79,19 +84,12 @@ CREATE TABLE alumno (
   PRIMARY KEY(cedulaAlumno),
   FOREIGN KEY (cedulaInstructor) REFERENCES instructor(cedulaInstructor)
 );
-
-INSERT INTO alumno values 
-  ('1234567810','Arias','ken','Jhon','Doe','1999-12-31','Carapungo','2019-12-31','0999999999','Estudiante','Activo','1234561232'),
-  ('1234567815','Bartco','ken','Jhon','Doe','1999-12-31','Carapungo','2019-12-31','0999999999','Otros','Activo','1234561232'),
-  ('1234567825','Perez','ken','Jhon','Doe','1999-12-31','Carapungo','2019-12-31','0999999999','Estudiante','Activo','1234561232'),
-  ('1234567824','Zaza','ken','Jhon','Doe','1999-12-31','Carapungo','2019-12-31','0999999999','Estudiante','Inactivo','1234561232');
-
-
-SELECT club.club, instructor.primerNombre
-FROM club
-INNER JOIN instructor ON club.idClub = instructor.idClub;
-
-SELECT * FROM alumno;
+SELECT alumno.cedulaAlumno, alumno.primerApellido, alumno.segundoApellido, alumno.primerNombre, alumno.segundoNombre, alumno.fechaNacimiento, alumno.direccion, alumno.fechaIngreso, alumno.genero, alumno.tipoSangre, alumno.ocupacion, alumno.estado, alumno.cedulaInstructor, instructor.primerApellido, instructor.primerNombre, club.idClub, club.club FROM alumno JOIN instructor ON instructor.cedulaInstructor = alumno.cedulaInstructor JOIN club ON club.idClub = instructor.idClub WHERE club.idClub = '1';
+-- INSERT INTO alumno values 
+--  ('1234567810','Arias','ken','Jhon','Doe','1999-12-31','Carapungo','2019-12-31','Masculino','O+','0999999999','Estudiante','Activo','0930766449'),
+--   ('1234567815','Bartco','ken','Jhon','Doe','1999-12-31','Carapungo','2019-12-31','Masculino','O+','0999999999','Otros','Activo','0930766449'),
+ --  ('1234567825','Perez','ken','Jhon','Doe','1999-12-31','Carapungo','2019-12-31','Masculino','O+','0999999999','Estudiante','Activo','0930766449'),
+--   ('1234567824','Zaza','ken','Jhon','Doe','1999-12-31','Carapungo','2019-12-31','Masculino','O+','0999999999','Estudiante','Inactivo','0930766449');
 
 CREATE TABLE horario (
   idHorario INT NOT NULL AUTO_INCREMENT,
@@ -104,11 +102,10 @@ CREATE TABLE horario (
 INSERT INTO horario (hoarioInicio, hoarioFin, cedulaInstructor) values 
   ('10:00','11:00','0930766449'),
   ('11:00','12:00','0930766449'),
-  ('12:00','13:00','0930766449'),
-  ('13:00','14:00','1234561232')
+  ('12:00','13:00','0930766449')
   ;
 
-SELECT * FROM horario;
+
 
 CREATE TABLE asistencia (
   idAsistencia INT NOT NULL AUTO_INCREMENT,
@@ -119,9 +116,9 @@ CREATE TABLE asistencia (
   CONSTRAINT FK_cedulaAlumno FOREIGN KEY (cedulaAlumno) REFERENCES alumno(cedulaAlumno),
   CONSTRAINT FK_idHorario FOREIGN KEY (idHorario) REFERENCES horario(idHorario)
 );
-INSERT INTO asistencia (fechaRegistro,cedulaAlumno, idHorario) values 
-  ('2023-10-30','1202547898',1),
-  ('2023-10-30','1234567810',4);
+-- INSERT INTO asistencia (fechaRegistro,cedulaAlumno, idHorario) values 
+--   ('2023-10-30','1202547898',1),
+--   ('2023-10-30','1234567810',4);
 
 CREATE TABLE cinturon (
   idCinturon INT NOT NULL AUTO_INCREMENT,
@@ -156,9 +153,9 @@ CREATE TABLE asenso (
   CONSTRAINT FK_cedulaInstructor FOREIGN KEY (cedulaInstructor) REFERENCES instructor(cedulaInstructor)
   
 );
-INSERT INTO asenso (fechaAsenso,cedulaAlumno, idCinturon,cedulaInstructor) values 
-  ('2023-10-30','1234567897','2','0930766449'),
-  ('2023-10-30','1234567896','3','0930766449');  
+-- INSERT INTO asenso (fechaAsenso,cedulaAlumno, idCinturon,cedulaInstructor) values 
+--   ('2023-10-30','1234567897','2','0930766449'),
+--   ('2023-10-30','1234567896','3','0930766449');  
 
 
 
@@ -176,9 +173,10 @@ CREATE TABLE pago (
   CONSTRAINT FK_cedulaInstructor1 FOREIGN KEY (cedulaInstructor) REFERENCES instructor(cedulaInstructor),
   CONSTRAINT FK_cedulaAlumno2 FOREIGN KEY (cedulaAlumno) REFERENCES alumno(cedulaAlumno)
 );
-INSERT INTO pago (fechaPago,mesPago,cedulaAlumno, formaPago, comprobante,cedulaInstructor) values 
-  ('2024-03-01','2024-03-01','1234567897','Efectivo',null,'0930766449'),
-  ('2024-03-01','2024-03-01','1234567896','Transferencia','4565988745','0930766449'); 
+-- INSERT INTO pago (fechaPago,mesPago,cedulaAlumno, formaPago, comprobante,cedulaInstructor) values 
+--   ('2024-03-01','2024-03-01','1234567897','Efectivo',null,'0930766449'),
+--   ('2024-03-01','2024-03-01','1234567896','Transferencia','4565988745','0930766449'); 
+
 
 SELECT * FROM asistencia;
 SELECT * FROM instructor;

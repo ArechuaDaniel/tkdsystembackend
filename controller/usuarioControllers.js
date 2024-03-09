@@ -117,7 +117,7 @@ const confirmar = async (req, res) => {
 }
 
 const olvidePassword = async (req, res) => {
-  const { correo,primerApellido,primerNombre } = req.body;
+  const { correo } = req.body;
   //COMPROBAR SI EL USUARIO EXISTE    
 
   const [result] = await pool.query("SELECT * FROM instructor WHERE correo = ?", [
@@ -129,8 +129,12 @@ const olvidePassword = async (req, res) => {
     const error = new Error('El usuario no existe');
     return res.status(404).json({ msg: error.message })
   }
+  
   try {
     const token = generarId();
+    const primerNombre= result[0].primerNombre;
+    const primerApellido = result[0].primerApellido;
+    
     await pool.query(
       "UPDATE instructor SET token = ?  WHERE correo = ?",
       [token, correo]

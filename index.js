@@ -4,6 +4,10 @@ import cors from "cors";
 import {PORT} from "./config.js";
 
 import clubRoutes from "./routes/club/clubRoutes.js";
+import clubRoutesClub from "./routes/club/clubRoutesClub.js";
+import instructorRoutesClub from "./routes/club/instructorRoutesClub.js";
+import alumnoRoutesClub from "./routes/club/alumnoRoutesClub.js";
+
 import instructorRoutes from "./routes/instructorRoutes.js";
 import usuarioRoutes from "./routes/usuarioRoutes.js";
 import alumnoRoutes from "./routes/alumnoRoutes.js";
@@ -38,9 +42,10 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 // Routing Club
-app.use("/api/club", clubRoutes);
-
-
+app.use("/api/club/club", clubRoutes);
+app.use("/api/club/usuario-club", clubRoutesClub);
+app.use("/api/club/instructor", instructorRoutesClub);
+app.use("/api/club/alumnos", alumnoRoutesClub);
 
 
 // Routing Instructor
