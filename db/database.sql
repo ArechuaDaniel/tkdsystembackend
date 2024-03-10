@@ -54,6 +54,7 @@ CREATE TABLE instructor (
   fechaRegistro DATE,
   telefono CHAR(10) DEFAULT NULL,
   genero ENUM("Masculino", "Femenino","Otros" ),
+  tipoSangre ENUM("AB+", "AB-","A+", "A-","B+", "B-","O+", "O-"),
   idClub INT NOT NULL,
   token CHAR(45),
   confirmado boolean DEFAULT false,
@@ -61,8 +62,8 @@ CREATE TABLE instructor (
   FOREIGN KEY (idParroquia) REFERENCES parroquia(idParroquia), 
   FOREIGN KEY (idClub) REFERENCES club(idClub)
 );
-INSERT INTO instructor (cedulaInstructor,correo,password,primerApellido,segundoApellido,primerNombre,segundoNombre,fechaNacimiento,idParroquia,direccion,fechaRegistro,telefono,genero,idClub, confirmado) values 
-  ('0930766449','daniel.ar98@hotmail.com','123456','Arechua','Pincay','Daniel','Doe','1990-12-31','1069','Carapungo','2019-12-31','0999999999','Masculino','1', '1');
+INSERT INTO instructor (cedulaInstructor,correo,password,primerApellido,segundoApellido,primerNombre,segundoNombre,fechaNacimiento,idParroquia,direccion,fechaRegistro,telefono,genero, tipoSangre,idClub, confirmado) values 
+  ('0930766449','daniel.ar98@hotmail.com','123456','Arechua','Pincay','Daniel','Doe','1990-12-31','1069','Carapungo','2019-12-31','0999999999','Masculino','O+','1', '1');
 
 
 
@@ -215,4 +216,6 @@ SELECT pais.pais, provincia.provincia, canton.canton FROM pais JOIN provincia ON
 
 
 -- CONSULTA DE PAIS PROVINCIA CANTON PARROQUIA
-select asociacion.asociacion, parroquia.parroquia, canton.canton, provincia.provincia, pais.pais from asociacion JOIN parroquia ON parroquia.idParroquia = asociacion.idParroquia JOIN canton ON canton.idCanton = parroquia.idCanton JOIN provincia ON provincia.idProvincia = canton.idProvincia JOIN pais ON pais.idPais = provincia.idPais;
+select club.club, club.director, club.fechaAfiliacion, club.telefono, club.correo,  club.direccion, club.idClub, parroquia.parroquia, canton.canton, provincia.provincia, pais.pais, pais.idPais, provincia.idProvincia, canton.idCanton, parroquia.idParroquia from club JOIN parroquia ON parroquia.idParroquia = club.idParroquia JOIN canton ON canton.idCanton = parroquia.idCanton JOIN provincia ON provincia.idProvincia = canton.idProvincia JOIN pais ON pais.idPais = provincia.idPais;
+
+clubs, director, fechaAfiliacion, telefono, correo, idParroquia, direccion, idClub

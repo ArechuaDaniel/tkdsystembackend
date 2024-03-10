@@ -37,7 +37,7 @@ const obtenerInstructor = async (req, res) => {
   try {
     const { id } = req.params;
     const cedulaInstructor= req.usuario[0][0].cedulaInstructor;
-    const [rows] = await pool.query("SELECT instructor.cedulaInstructor,instructor.primerApellido,instructor.segundoApellido,instructor.primerNombre,instructor.segundoNombre,instructor.fechaNacimiento,instructor.direccion,instructor.fechaRegistro,instructor.telefono,instructor.correo,instructor.genero,instructor.idClub, club.club FROM instructor JOIN club ON club.idClub = instructor.idClub WHERE instructor.cedulaInstructor = ? ;", [
+    const [rows] = await pool.query("SELECT instructor.cedulaInstructor,instructor.primerApellido,instructor.segundoApellido,instructor.primerNombre,instructor.segundoNombre,instructor.fechaNacimiento,instructor.direccion,instructor.fechaRegistro,instructor.telefono,instructor.correo,instructor.genero,instructor.tipoSangre,instructor.idClub, club.club,parroquia.parroquia, canton.canton, provincia.provincia, pais.pais, pais.idPais, provincia.idProvincia, canton.idCanton, parroquia.idParroquia FROM instructor JOIN club ON club.idClub = instructor.idClub JOIN parroquia ON parroquia.idParroquia = instructor.idParroquia JOIN canton ON canton.idCanton = parroquia.idCanton JOIN provincia ON provincia.idProvincia = canton.idProvincia JOIN pais ON pais.idPais = provincia.idPais WHERE instructor.cedulaInstructor = ? ;", [
       cedulaInstructor
     ]);
 

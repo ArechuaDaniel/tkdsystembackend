@@ -7,9 +7,9 @@ const obtenerClubes= async (req, res) => {
     
   try {
     
-    const [rows] = await pool.query("SELECT * FROM club WHERE idClub = ? ;", [
-        idClub
-      ]);
+    const [rows] = await pool.query("select club.club, club.director, club.fechaAfiliacion, club.telefono, club.correo,  club.direccion, club.idClub, parroquia.parroquia, canton.canton, provincia.provincia, pais.pais, pais.idPais, provincia.idProvincia, canton.idCanton, parroquia.idParroquia from club JOIN parroquia ON parroquia.idParroquia = club.idParroquia JOIN canton ON canton.idCanton = parroquia.idCanton JOIN provincia ON provincia.idProvincia = canton.idProvincia JOIN pais ON pais.idPais = provincia.idPais WHERE idClub = ? ;", [
+      idClub
+    ]);
     res.json(rows[0]);
   } catch (error) {
     return res.status(500).json({ message: "No se puede Obtener Club" });
@@ -39,7 +39,7 @@ const obtenerClub = async (req, res) => {
   try {
     const { id } = req.params;
     const idClub= req.usuario[0][0].idClub;
-    const [rows] = await pool.query("SELECT * FROM club WHERE idClub = ? ;", [
+    const [rows] = await pool.query("select club.club, club.director, club.fechaAfiliacion, club.telefono, club.correo,  club.direccion, club.idClub, parroquia.parroquia, canton.canton, provincia.provincia, pais.pais, pais.idPais, provincia.idProvincia, canton.idCanton, parroquia.idParroquia from club JOIN parroquia ON parroquia.idParroquia = club.idParroquia JOIN canton ON canton.idCanton = parroquia.idCanton JOIN provincia ON provincia.idProvincia = canton.idProvincia JOIN pais ON pais.idPais = provincia.idPais WHERE idClub = ? ;", [
       idClub
     ]);
 
@@ -82,27 +82,27 @@ const editarClub = async (req, res) => {
 const cambiarPassword = async (req, res) => {
   try {
     const { id } = req.params;
-    const cedulaInstructor= req.usuario[0][0].cedulaInstructor;
+    const idClub= req.usuario[0][0].idClub;
     const { password } = req.body;
     var passwordHash = await bcryptjs.hash(password, 10);
     
     const [result] = await pool.query(
-      "UPDATE instructor SET password = IFNULL(?, password) WHERE cedulaInstructor = ?",
-      [passwordHash,cedulaInstructor  ]
+      "UPDATE club SET password = IFNULL(?, password) WHERE idClub = ?",
+      [passwordHash,idClub  ]
     );
     
 
     if (result.affectedRows === 0)
-      return res.status(404).json({ message: "Instructor no encontrado" });
+      return res.status(404).json({ message: "Club no encontrado" });
 
-    const [rows] = await pool.query("SELECT * FROM instructor WHERE cedulaInstructor = ?", [
-      cedulaInstructor
+    const [rows] = await pool.query("SELECT * FROM club WHERE idClub = ?", [
+      idClub
     ]);
 
     res.json(rows[0]);
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "No se puede actualizar el instructor" });
+    return res.status(500).json({ message: "No se puede actualizar el Club" });
   }
     
 }

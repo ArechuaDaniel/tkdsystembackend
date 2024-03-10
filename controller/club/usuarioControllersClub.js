@@ -1,18 +1,18 @@
-import generarId from "../helpers/generarId.js";
+import generarId from "../../helpers/generarId.js";
 //import generarJWT from "../helpers/generarJWT.js";
-import { pool } from "../db.js";
+import { pool } from "../../db.js";
 import bcryptjs from 'bcryptjs'
-import generarJWT from "../helpers/generarJWT.js";
-import {emailOlvidePassword, emailRegistro}  from "../helpers/email.js";
+import generarJWT from "../../helpers/generarJWT.js";
+import {emailOlvidePassword, emailRegistro}  from "../../helpers/email.js";
 
 
 
 const registrar = async (req, res) => {
 
   try {
-
-    const { cedulaInstructor, correo, password, primerApellido, segundoApellido, primerNombre, segundoNombre, direccion, fechaRegistro, telefono, idClub } = req.body;
-
+    const idClub= req.usuario[0][0].idClub;
+    const { cedulaInstructor,primerApellido,segundoApellido,primerNombre,segundoNombre,fechaNacimiento,direccion,idParroquia,fechaRegistro,telefono, genero, tipoSangre, correo, password } = req.body;
+    
 
     const [result] = await pool.query("SELECT * FROM instructor WHERE correo = ?", [
       correo,
@@ -23,18 +23,20 @@ const registrar = async (req, res) => {
       const token = generarId();
 
       const [rows] = await pool.query(
-        "INSERT INTO instructor (cedulaInstructor,correo,password,primerApellido,segundoApellido,primerNombre,segundoNombre,direccion,fechaRegistro,telefono,idClub,token) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)",
-        [cedulaInstructor, correo, passwordHash, primerApellido, segundoApellido, primerNombre, segundoNombre, direccion, fechaRegistro, telefono, idClub, token],
+        "INSERT INTO instructor (cedulaInstructor,primerApellido,segundoApellido,primerNombre,segundoNombre,fechaNacimiento,direccion,idParroquia,fechaRegistro,telefono, genero, tipoSangre, correo, password,idClub,token) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?, ?, ? ,?)",
+        [cedulaInstructor,primerApellido,segundoApellido,primerNombre,segundoNombre,fechaNacimiento,direccion,idParroquia,fechaRegistro,telefono, genero, tipoSangre, correo, passwordHash,idClub, token],
 
       );
+      
       //Enviar email de confirmación
-      const nombre = {primerApellido, primerNombre}
+      const nombre = {primerNombre , primerApellido}
+      console.log(nombre);
       emailRegistro({
         nombre,
         correo,
         token
       })
-      res.json({ msg: "Instructor Creado Correctamente, Revisa tu email para confirmar tu cuenta" })
+      res.json({ msg: "Instructor Creado Correctamente, Revisa el email registrado para confirmar la cuenta" })
     } else {
       const error = new Error('Usuario ya registrado');
       return res.status(400).json({ msg: error.message })
@@ -133,7 +135,6 @@ const olvidePassword = async (req, res) => {
     const token = generarId();
     const primerNombre= result[0].primerNombre;
     const primerApellido = result[0].primerApellido;
-    const nombre = {primerApellido, primerNombre}
     
     await pool.query(
       "UPDATE instructor SET token = ?  WHERE correo = ?",
@@ -141,7 +142,8 @@ const olvidePassword = async (req, res) => {
     );
     // Enviar Email
     emailOlvidePassword({
-        nombre,
+        primerApellido,
+        primerNombre,
         correo,
         token
     })

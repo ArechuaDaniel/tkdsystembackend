@@ -5,6 +5,7 @@ import {PORT} from "./config.js";
 
 import clubRoutes from "./routes/club/clubRoutes.js";
 import clubRoutesClub from "./routes/club/clubRoutesClub.js";
+import usuarioRoutesClub from "./routes/club/usuarioRoutesClub.js";
 import instructorRoutesClub from "./routes/club/instructorRoutesClub.js";
 import alumnoRoutesClub from "./routes/club/alumnoRoutesClub.js";
 
@@ -16,6 +17,7 @@ import asistenciaRoutes from "./routes/asistenciaRoutes.js";
 import asensoRoutes from "./routes/asensoRoutes.js";
 import cinturonRoutes from "./routes/cinturonRoutes.js"
 import pagosRoutes from "./routes/pagosRoutes.js"
+import ubicacionRoutes from "./routes/ubicacionRoutes.js"
 
 
 const app = express();
@@ -26,7 +28,7 @@ dotenv.config();
 
 //const servidor = process.env.FRONTEND_URL , 'http://127.0.0.1:5173'
 //CONFIGURAR CORS
-const whitelist=[ process.env.FRONTEND_URL, 'http://127.0.0.1:5173'];
+const whitelist=[ process.env.FRONTEND_URL, 'http://127.0.0.1:5173', 'http://127.0.0.1:5174'];
 const corsOptions = {
     origin: function (origin, callback){
         if (whitelist.includes(origin)) {
@@ -41,9 +43,12 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
+app.use("/api/ubicacion", ubicacionRoutes);
+
 // Routing Club
 app.use("/api/club/club", clubRoutes);
 app.use("/api/club/usuario-club", clubRoutesClub);
+app.use("/api/club/usuarios-instructor", usuarioRoutesClub);
 app.use("/api/club/instructor", instructorRoutesClub);
 app.use("/api/club/alumnos", alumnoRoutesClub);
 
