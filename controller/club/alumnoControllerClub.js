@@ -6,7 +6,7 @@ const obtenerAlumnos = async (req, res) => {
     
   try {
 
-    const [rows] = await pool.query("SELECT alumno.cedulaAlumno, alumno.primerApellido, alumno.segundoApellido, alumno.primerNombre, alumno.segundoNombre, alumno.fechaNacimiento, alumno.direccion, alumno.fechaIngreso, alumno.genero, alumno.tipoSangre, alumno.ocupacion, alumno.estado, alumno.cedulaInstructor,  club.idClub, club.club FROM alumno JOIN instructor ON instructor.cedulaInstructor = alumno.cedulaInstructor JOIN club ON club.idClub = instructor.idClub WHERE club.idClub = ?;" , [idClub]);
+    const [rows] = await pool.query("SELECT alumno.cedulaAlumno, alumno.primerApellido, alumno.segundoApellido, alumno.primerNombre, alumno.segundoNombre, alumno.fechaNacimiento, alumno.direccion, alumno.fechaIngreso, alumno.genero, alumno.tipoSangre, alumno.ocupacion, alumno.estado, alumno.cedulaInstructor,  club.idClub, club.club, instructor.primerNombre as nombreInstructor, instructor.primerApellido as apellidoInstructor FROM alumno JOIN instructor ON instructor.cedulaInstructor = alumno.cedulaInstructor JOIN club ON club.idClub = instructor.idClub WHERE club.idClub = ?;" , [idClub]);
     //console.log(rows);
     // const [rows] = await pool.query("SELECT * FROM alumno WHERE cedulaInstructor = ? ORDER BY primerApellido",[cedulaInstructor]);
     res.json(rows);
@@ -38,8 +38,8 @@ const obtenerAlumno = async (req, res) => {
   try {
     const { id } = req.params;
     const cedulaInstructor= req.usuario[0][0].cedulaInstructor;
-    const [rows] = await pool.query("SELECT * FROM alumno WHERE cedulaAlumno = ? and cedulaInstructor = ?", [
-      id, cedulaInstructor
+    const [rows] = await pool.query("SELECT * FROM alumno WHERE cedulaAlumno = ? ", [
+      id
     ]);
 
     if (rows.length <= 0) {

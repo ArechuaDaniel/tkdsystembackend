@@ -54,12 +54,12 @@ const editarInstructor = async (req, res) => {
   try {
     const { id } = req.params;
     const cedulaInstructor= req.usuario[0][0].cedulaInstructor;
-    const { primerApellido,segundoApellido,primerNombre,segundoNombre,fechaNacimiento,direccion,fechaRegistro,telefono,idClub,correo,genero} = req.body;
+    const { primerApellido,segundoApellido,primerNombre,segundoNombre,fechaNacimiento,direccion,fechaRegistro,telefono,idClub,correo,genero,tipoSangre} = req.body;
     //var passwordHash = await bcryptjs.hash(password, 10);
     
     const [result] = await pool.query(
-      "UPDATE instructor SET  primerApellido = IFNULL(?, primerApellido), segundoApellido = IFNULL(?, segundoApellido), primerNombre = IFNULL(?, primerNombre), segundoNombre = IFNULL(?, segundoNombre), fechaNacimiento = IFNULL(?, fechaNacimiento), direccion = IFNULL(?, direccion), fechaRegistro = IFNULL(?, fechaRegistro), telefono = IFNULL(?, telefono), idClub = IFNULL(?, idClub), correo = IFNULL(?, correo), genero = IFNULL(?, genero) WHERE cedulaInstructor = ?",
-      [primerApellido,segundoApellido,primerNombre,segundoNombre,fechaNacimiento,direccion,fechaRegistro,telefono,idClub,correo,genero,cedulaInstructor  ]
+      "UPDATE instructor SET  primerApellido = IFNULL(?, primerApellido), segundoApellido = IFNULL(?, segundoApellido), primerNombre = IFNULL(?, primerNombre), segundoNombre = IFNULL(?, segundoNombre), fechaNacimiento = IFNULL(?, fechaNacimiento), direccion = IFNULL(?, direccion), fechaRegistro = IFNULL(?, fechaRegistro), telefono = IFNULL(?, telefono), idClub = IFNULL(?, idClub), correo = IFNULL(?, correo), genero = IFNULL(?, genero) , tipoSangre = IFNULL(?, tipoSangre) WHERE cedulaInstructor = ?",
+      [primerApellido,segundoApellido,primerNombre,segundoNombre,fechaNacimiento,direccion,fechaRegistro,telefono,idClub,correo,genero,tipoSangre,cedulaInstructor  ]
     );
     
 
