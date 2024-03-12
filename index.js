@@ -3,6 +3,12 @@ import dotenv from "dotenv";
 import cors from "cors";
 import {PORT} from "./config.js";
 
+
+import asoRoutes from "./routes/asociacion/asoRoutes.js";
+import asoRoutesAso from "./routes/asociacion/asoRoutesAso.js";
+import clubRoutesAso from "./routes/asociacion/clubRoutesAso.js";
+
+
 import clubRoutes from "./routes/club/clubRoutes.js";
 import clubRoutesClub from "./routes/club/clubRoutesClub.js";
 import usuarioRoutesClub from "./routes/club/usuarioRoutesClub.js";
@@ -28,7 +34,7 @@ dotenv.config();
 
 //const servidor = process.env.FRONTEND_URL , 'http://127.0.0.1:5173'
 //CONFIGURAR CORS
-const whitelist=[ process.env.FRONTEND_URL, 'http://127.0.0.1:5173', 'http://127.0.0.1:5174'];
+const whitelist=[ process.env.FRONTEND_URL, 'http://127.0.0.1:5173', 'http://127.0.0.1:5174', 'http://127.0.0.1:5175'];
 const corsOptions = {
     origin: function (origin, callback){
         if (whitelist.includes(origin)) {
@@ -44,6 +50,12 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 app.use("/api/ubicacion", ubicacionRoutes);
+
+
+// Routing Asociacion
+app.use("/api/asociacion/usuario-asociacion", asoRoutes);
+app.use("/api/asociacion/usuario", asoRoutesAso);
+app.use("/api/asociacion/usuarios-club", clubRoutesAso);
 
 // Routing Club
 app.use("/api/club/club", clubRoutes);
