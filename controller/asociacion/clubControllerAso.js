@@ -19,20 +19,20 @@ const nuevoClub = async (req, res) => {
   
   
   try {
-    const {  cedulaAlumno ,primerApellido ,segundoApellido ,primerNombre  ,segundoNombre , fechaNacimiento ,direccion, fechaIngreso,telefono, ocupacion, estado,genero,tipoSangre,} = req.body;    
+    const {  club, director, fechaAfiliacion, telefono, password, correo,  idParroquia, direccion} = req.body;    
 
-    const cedulaInstructor= req.usuario[0][0].cedulaInstructor;
+    const idAsociacion= req.usuario[0][0].idAsociacion;
     
     
     
         
         const [rows] = await pool.query(
-          "INSERT INTO alumno (cedulaAlumno ,primerApellido ,segundoApellido ,primerNombre  ,segundoNombre , fechaNacimiento ,direccion, fechaIngreso,telefono, ocupacion,estado, genero,tipoSangre,cedulaInstructor) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?)",
-          [cedulaAlumno ,primerApellido ,segundoApellido ,primerNombre  ,segundoNombre , fechaNacimiento ,direccion, fechaIngreso,telefono, ocupacion,estado,genero,tipoSangre,cedulaInstructor]
+          "INSERT INTO club (club, director, fechaAfiliacion, telefono, password, correo,  idParroquia, direccion, idAsociacion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+          [club, director, fechaAfiliacion, telefono, password, correo,  idParroquia, direccion, idAsociacion]
         );
-        res.status(201).json({ id: rows.insertId, cedulaAlumno ,primerApellido ,segundoApellido ,primerNombre  ,segundoNombre , fechaNacimiento ,direccion, fechaIngreso,telefono, ocupacion,estado,genero,tipoSangre, cedulaInstructor});
+        res.status(201).json({ id: rows.insertId, club, director, fechaAfiliacion, telefono, password, correo,  idParroquia, direccion, idAsociacion});
       } catch (error) {
-        return res.status(500).json({ message: "No se puede registrar alumno" });
+        return res.status(500).json({ message: "No se puede registrar Club" });
       }
 }
 const obtenerClub = async (req, res) => {
@@ -109,16 +109,16 @@ const cambiarPassword = async (req, res) => {
 const eliminarClub = async (req, res) => {
   try {
     const { id } = req.params;
-    const cedulaInstructor= req.usuario[0][0].cedulaInstructor;
-    const [rows] = await pool.query("DELETE FROM alumno WHERE cedulaAlumno = ? and cedulaInstructor = ?", [id, cedulaInstructor]);
+    const idAsociacion= req.usuario[0][0].idAsociacion;
+    const [rows] = await pool.query("DELETE FROM club WHERE idClub = ? and idAsociacion = ?", [id, idAsociacion]);
 
     if (rows.affectedRows <= 0) {
-      return res.status(404).json({ message: "Alumno no se encuentra" });
+      return res.status(404).json({ message: "Club no se encuentra" });
     }
 
     return res.sendStatus(204);
   } catch (error) {
-    return res.status(500).json({ message: "No se puede eliminar Alumno" });
+    return res.status(500).json({ message: "No se puede eliminar Club" });
   }
 }
 
